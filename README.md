@@ -7,7 +7,6 @@
 - **ciagan**: CIAGAN 模型实现，用于面部匿名化
 - **dashcam_anonymizer**: 行车记录仪图像/视频匿名化工具
 - **deep_privacy2**: DeepPrivacy2 模型实现
-- **DeepPrivacy**: 原始 DeepPrivacy 模型
 - **face_anon_simple**: 简化的面部匿名化工具
 - **garnet**: GARNet 模型实现
 
