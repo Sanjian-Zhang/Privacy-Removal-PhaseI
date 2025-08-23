@@ -1,0 +1,21 @@
+model_path: 'model/best.pt'
+images_path: '/home/zhiqics/sanjian/dataset/images/Train'
+detection_conf_thresh: 0.1
+gpu_avail: False #True
+img_format: .jpg #or any other format supported by YOLO
+img_width: 960
+img_height: 540
+blur_radius: 31 #increase to increase blur intensity (odd values)
+output_folder: /home/zhiqics/sanjian/dataset/images/Train_full_anonymized
+# COCO specific settings
+use_coco_labels: true
+coco_annotation_file: '/home/zhiqics/sanjian/dataset/annotations/instances_Train.json'
+# Class mapping - process ALL sensitive content
+class_mapping:
+  text: 0        # anonymize text regions
+  person: 0      # anonymize faces from person class
+  face: 0        # anonymize face annotations
+  license_plate: 0  # anonymize license plates
+  car: -1        # ignore cars
+  truck: -1      # ignore trucks
+  bus: -1        # ignore buses
