@@ -57,19 +57,19 @@ def main():
         print(f"Error: Input directory {args.input} does not exist!")
         return
     
-    # 创建输出目录
+    # Create output directory
     os.makedirs(args.output, exist_ok=True)
     
-    # 准备目录结构
+    # Prepare directory structure
     print("Preparing directory structure...")
     temp_input_dir = prepare_directory_structure(args.input, args.temp)
     
-    # 使用 dlib 处理数据
-    dlib_predictor_path = "source/"  # shape_predictor_68_face_landmarks.dat 在这个目录
+    # Use dlib to process data
+    dlib_predictor_path = "source/"  # shape_predictor_68_face_landmarks.dat in this directory
     
     print("Processing images with dlib face landmarks...")
     try:
-        # 确保输出目录存在
+        # Ensure output directory exists
         for subdir in ['msk', 'clr', 'lndm', 'orig']:
             os.makedirs(os.path.join(args.output, subdir), exist_ok=True)
         
@@ -77,11 +77,11 @@ def main():
         print("Processing completed successfully!")
         print(f"Processed data saved to: {args.output}")
         
-        # 列出生成的文件
+        # List generated files
         for root, dirs, files in os.walk(args.output):
             if files:
                 print(f"\nGenerated files in {root}:")
-                for file in files[:5]:  # 显示前5个文件
+                for file in files[:5]:  # Display first 5 files
                     print(f"  - {file}")
                 if len(files) > 5:
                     print(f"  ... and {len(files) - 5} more files")
@@ -89,7 +89,7 @@ def main():
     except Exception as e:
         print(f"Error during processing: {e}")
     
-    # 清理临时目录
+    # Clean up temporary directory
     if os.path.exists(args.temp):
         shutil.rmtree(args.temp)
         print(f"Cleaned up temporary directory: {args.temp}")

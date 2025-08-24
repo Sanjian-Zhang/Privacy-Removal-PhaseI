@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-基于COCO标注文件处理训练图片的综合脚本 - 无损版本
-支持多种处理方式：目标检测、文本去除、面部匿名化等
-确保图片处理过程中不进行压缩
+Comprehensive script for processing training images based on COCO annotation files - Lossless version
+Supports multiple processing methods: object detection, text removal, facial anonymization, etc.
+Ensures no compression during image processing
 """
 
 import os

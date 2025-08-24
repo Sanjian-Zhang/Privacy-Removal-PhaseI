@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-自定义训练脚本 - 用于训练我们处理好的测试图片
+Custom training script - for training our processed test images
 """
 
 import os

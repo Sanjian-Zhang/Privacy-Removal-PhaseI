@@ -55,48 +55,48 @@ def anonymize_image(image_path, output_path, anonymizer, add_tag=True, visualize
             'truncation_value': 0.6  # Optimization parameter: more realistic effects
         }
         
-        # 进行匿名化处理
+        # Perform anonymization
         anonymized = anonymizer(image_tensor, **synthesis_kwargs)
         
-        # 转换回numpy数组
+        # Convert back to numpy array
         anonymized = utils.im2numpy(anonymized)
         
         if visualize:
-            # 显示结果
+            # Show results
             cv2.imshow('Original', cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
             cv2.imshow('Anonymized', cv2.cvtColor(anonymized, cv2.COLOR_RGB2BGR))
             cv2.waitKey(1000)
             cv2.destroyAllWindows()
         
-        # 保存结果 - 可选添加标识
+        # Save results - optional tag addition
         if output_path:
             anonymized_pil = Image.fromarray(anonymized)
             
-            # 如果尺寸不同，调整回原始尺寸
+            # If dimensions differ, resize back to original size
             if anonymized_pil.size != original_size:
-                # 使用高质量重采样
+                # Use high-quality resampling
                 try:
                     anonymized_pil = anonymized_pil.resize(original_size, resample=Image.Resampling.LANCZOS)
                 except AttributeError:
-                    # 兼容旧版PIL
+                    # Compatibility with older PIL versions
                     anonymized_pil = anonymized_pil.resize(original_size, resample=Image.LANCZOS)
             
-            # 决定输出路径
+            # Determine output path
             if add_tag:
-                # 添加优化标识到文件名
+                # Add optimization tag to filename
                 output_path = Path(output_path)
                 filename_parts = output_path.stem.split('.')
                 base_name = filename_parts[0]
                 extension = output_path.suffix
                 
-                # 创建带有优化标识的新文件名
-                # 格式: {原名}_optimized_tv06_dt30.jpg
+                # Create new filename with optimization tag
+                # Format: {original_name}_optimized_tv06_dt30.jpg
                 new_filename = f"{base_name}_optimized_tv06_dt30{extension}"
                 final_output_path = output_path.parent / new_filename
             else:
                 final_output_path = output_path
             
-            # 高质量保存
+            # High-quality save
             anonymized_pil.save(final_output_path, optimize=False, quality=95)
             logger.log(f"Saved anonymized image to: {final_output_path} (size: {anonymized_pil.size})")
         
@@ -109,14 +109,14 @@ def anonymize_image(image_path, output_path, anonymizer, add_tag=True, visualize
 
 
 def anonymize_directory(input_dir, output_dir, anonymizer, add_tag=True, visualize=False):
-    """批量匿名化目录中的图像"""
+    """Batch anonymize images in a directory"""
     input_path = Path(input_dir)
     output_path = Path(output_dir)
     
-    # 创建输出目录
+    # Create output directory
     output_path.mkdir(parents=True, exist_ok=True)
     
-    # 支持的图像格式
+    # Supported image formats
     image_extensions = ['*.jpg', '*.jpeg', '*.png', '*.bmp', '*.tiff']
     image_files = []
     
@@ -175,14 +175,14 @@ def anonymize_directory(input_dir, output_dir, anonymizer, add_tag=True, visuali
 )
 def main(config_path, input_path, output_path, visualize, detection_score_threshold, add_tag, seed):
     """
-    简化版图像匿名化工具 - 可选文件名标识
+    Simplified image anonymization tool - Optional filename tagging
     
-    如果启用标识 (--add-tag)，输出文件名格式:
-    {原始名称}_optimized_tv06_dt30.jpg
+    If tagging is enabled (--add-tag), output filename format:
+    {original_name}_optimized_tv06_dt30.jpg
     
-    参数说明:
-    - tv06: truncation_value=0.6 (优化后的截断值)
-    - dt30: detection_threshold=0.3 (检测阈值)
+    Parameter explanation:
+    - tv06: truncation_value=0.6 (optimized truncation value)
+    - dt30: detection_threshold=0.3 (detection threshold)
     """
     
     # 设置随机种子
