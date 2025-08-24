@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-简单的GaRNet模型测试脚本
+Simple GaRNet model testing script
 """
 
 import os

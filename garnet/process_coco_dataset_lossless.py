@@ -23,13 +23,13 @@ def load_coco_annotations(annotation_file):
     with open(annotation_file, 'r') as f:
         content = f.read()
         
-    # 尝试解析JSON
+    # Try to parse JSON
     try:
         if content.strip().startswith('{'):
             data = json.loads(content)
             return data
         else:
-            # 如果不是完整JSON，尝试解析单个标注条目
+            # If not complete JSON, try to parse individual annotation entries
             annotations = []
             lines = content.strip().split('\n')
             for line in lines:
