@@ -11,20 +11,20 @@ from source.process_data import get_lndm
 
 def prepare_directory_structure(input_dir, temp_dir):
     """
-    为 CIAGAN 数据处理准备目录结构
-    CIAGAN 期望的目录结构：input_dir/identity_folder/image.jpg
+    Prepare directory structure for CIAGAN data processing
+    CIAGAN expects directory structure: input_dir/identity_folder/image.jpg
     """
-    # 创建临时目录结构
+    # Create temporary directory structure
     os.makedirs(temp_dir, exist_ok=True)
     identity_dir = os.path.join(temp_dir, "identity_0")
     os.makedirs(identity_dir, exist_ok=True)
     
-    # 复制所有图片到 identity_0 文件夹，重命名为数字
+    # Copy all images to identity_0 folder, rename to numbers
     counter = 0
     for filename in sorted(os.listdir(input_dir)):
         if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
             src_path = os.path.join(input_dir, filename)
-            # 重命名为数字格式
+            # Rename to numeric format
             new_filename = f"{counter}.jpg"
             dst_path = os.path.join(identity_dir, new_filename)
             shutil.copy2(src_path, dst_path)
@@ -52,7 +52,7 @@ def main():
     print(f"Output directory: {args.output}")
     print(f"Temp directory: {args.temp}")
     
-    # 检查输入目录
+    # Check input directory
     if not os.path.exists(args.input):
         print(f"Error: Input directory {args.input} does not exist!")
         return

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-简单版本：在当前处理的基础上添加文件名标识
-这个脚本可以用于新的批次处理，为输出文件添加参数标识
+Simple version: Add filename identification based on current processing
+This script can be used for new batch processing, adding parameter tags to output files
 """
 import cv2
 import torch
@@ -22,7 +22,7 @@ import glob
 
 
 def load_image(image_path):
-    """加载图像文件"""
+    """Load image file"""
     try:
         im = Image.open(image_path).convert("RGB")
         im = _apply_exif_orientation(im)
@@ -33,26 +33,26 @@ def load_image(image_path):
 
 
 def anonymize_image(image_path, output_path, anonymizer, add_tag=True, visualize=False):
-    """匿名化单个图像 - 保持原始尺寸并可选添加标识"""
+    """Anonymize single image - maintain original size and optionally add identification"""
     image = load_image(image_path)
     if image is None:
         return False
     
-    # 记录原始尺寸
+    # Record original dimensions
     original_size = (image.shape[1], image.shape[0])  # (width, height)
     
     try:
-        # 使用dp2的工具函数正确转换图像
+        # Use dp2's utility function to correctly convert image
         import hashlib
         md5_ = hashlib.md5(image).hexdigest()
         image_tensor = utils.im2torch(image, to_float=False, normalize=False)[0]
         
-        # 设置必要的synthesis参数 - 优化版
+        # Set necessary synthesis parameters - optimized version
         synthesis_kwargs = {
             'cache_id': md5_,
-            'multi_modal_truncation': False,  # 设为True可增加多样性
+            'multi_modal_truncation': False,  # Set to True to increase diversity
             'amp': False,
-            'truncation_value': 0.6  # 优化参数：更真实的效果
+            'truncation_value': 0.6  # Optimization parameter: more realistic effects
         }
         
         # 进行匿名化处理
