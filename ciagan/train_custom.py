@@ -38,7 +38,7 @@ def train_small_dataset():
     """
     print("=== CIAGAN Training Started ===")
     
-    # 准备训练数据
+    # Prepare training data
     train_data_dir = setup_training_data()
     print(f"训练数据目录: {train_data_dir}")
     

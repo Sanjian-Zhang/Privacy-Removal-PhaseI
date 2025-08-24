@@ -73,9 +73,9 @@ def save_image_lossless(image, output_path, format='PNG'):
     """Save image (lossless format)"""
     try:
         if format.upper() == 'PNG':
-            # 使用PIL保存PNG，确保无损
+            # Use PIL to save PNG, ensure lossless
             if isinstance(image, np.ndarray):
-                # OpenCV图片 (BGR) 转换为 PIL (RGB)
+                # Convert OpenCV image (BGR) to PIL (RGB)
                 if len(image.shape) == 3:
                     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                     pil_image = Image.fromarray(image_rgb)
@@ -84,7 +84,7 @@ def save_image_lossless(image, output_path, format='PNG'):
             else:
                 pil_image = image
             
-            # 确保输出路径是PNG
+            # Ensure output path is PNG
             if not output_path.lower().endswith('.png'):
                 output_path = output_path.rsplit('.', 1)[0] + '.png'
             

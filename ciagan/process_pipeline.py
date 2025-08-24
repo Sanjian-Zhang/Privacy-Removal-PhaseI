@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-CIAGAN 一键处理脚本 - 从原始图片到匿名化结果
+CIAGAN one-click processing script - from original images to anonymized results
 """
 
 import os
