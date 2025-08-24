@@ -36,7 +36,7 @@ def train_small_dataset():
     """
     Use our small dataset for training test
     """
-    print("=== CIAGAN 训练开始 ===")
+    print("=== CIAGAN Training Started ===")
     
     # 准备训练数据
     train_data_dir = setup_training_data()

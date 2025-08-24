@@ -70,7 +70,7 @@ def load_coco_annotations(annotation_file):
         return None
 
 def save_image_lossless(image, output_path, format='PNG'):
-    """保存图片（无损格式）"""
+    """Save image (lossless format)"""
     try:
         if format.upper() == 'PNG':
             # 使用PIL保存PNG，确保无损
