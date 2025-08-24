@@ -185,33 +185,33 @@ def main(config_path, input_path, output_path, visualize, detection_score_thresh
     - dt30: detection_threshold=0.3 (detection threshold)
     """
     
-    # 设置随机种子
+    # Set random seed
     tops.set_seed(seed)
     
-    # 加载配置
+    # Load configuration
     cfg = utils.load_config(config_path)
     cfg.detector.score_threshold = detection_score_threshold
     utils.print_config(cfg)
     
-    # 初始化匿名化器
+    # Initialize anonymizer
     logger.log("Initializing anonymizer...")
     anonymizer = instantiate(cfg.anonymizer, load_cache=True)
     
-    # 显示配置信息
+    # Display configuration information
     logger.log(f"Using optimized parameters:")
     logger.log(f"  - Detection threshold: {detection_score_threshold}")
     logger.log(f"  - Truncation value: 0.6 (optimized)")
     logger.log(f"  - Add filename tags: {add_tag}")
     logger.log(f"  - Image quality: 95")
     
-    # 处理图像
+    # Process images
     input_path = Path(input_path)
     output_path = Path(output_path)
     
     if input_path.is_dir():
         anonymize_directory(input_path, output_path, anonymizer, add_tag, visualize)
     else:
-        # 单个文件处理
+        # Single file processing
         output_path.parent.mkdir(parents=True, exist_ok=True)
         anonymize_image(input_path, output_path, anonymizer, add_tag, visualize)
 

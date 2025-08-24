@@ -17,7 +17,7 @@ import argparse
 from PIL import Image
 
 def load_coco_annotations(annotation_file):
-    """加载COCO格式的标注文件"""
+    """Load COCO format annotation file"""
     print(f"Loading annotations from {annotation_file}...")
     
     with open(annotation_file, 'r') as f:

@@ -56,7 +56,7 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
     model.to(device_comp)
     print('Model is ready')
     
-    # 确保输出目录存在
+    # Ensure output directory exists
     import os
     os.makedirs(output_path, exist_ok=True)
     

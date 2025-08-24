@@ -11,16 +11,16 @@ from source.train import ciagan_exp
 
 def setup_training_data():
     """
-    为训练准备数据结构
+    Prepare data structure for training
     """
-    # 创建符合训练要求的数据目录结构
+    # Create data directory structure required for training
     train_data_dir = "/home/zhiqics/sanjian/baseline/ciagan/train_data/"
     source_dir = "/home/zhiqics/sanjian/baseline/ciagan/processed_output/"
     
-    # 创建目录
+    # Create directories
     os.makedirs(train_data_dir, exist_ok=True)
     
-    # 复制处理好的数据
+    # Copy processed data
     for subdir in ['clr', 'lndm', 'msk', 'orig']:
         src_path = os.path.join(source_dir, subdir)
         dst_path = os.path.join(train_data_dir, subdir)
