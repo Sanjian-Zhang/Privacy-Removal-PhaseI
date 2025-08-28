@@ -1,0 +1,9 @@
+ultralytics==8.0.144
+pybboxes==0.1.6
+opencv-python==4.8.0.76
+numpy==1.25.1
+PyYAML==6.0.1
+torch==2.0.1
+torchvision==0.15.2
+pillow==10.0.0
+tqdm==4.65.0
