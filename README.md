@@ -376,10 +376,11 @@ sudo docker push sanjinn/privacy_removal_phase1:face-anon-v3
 
 ---
 
-## Publishing Checklist
+## Publishing Checklist  
 
 ### Face Anonymization (v3.0)
 - [x] Docker Hub account created
+
 - [x] Repository `sanjinn/privacy_removal_phase1` created on Docker Hub
 - [x] Image built and tested locally
 - [x] Tag `face-anon-v3` pushed to Docker Hub
@@ -406,15 +407,18 @@ sudo docker push sanjinn/privacy_removal_phase1:face-anon-v3
 
 ### DeepPrivacy2 Latest State-of-the-Art (✅ **NEWEST - 2024 RELEASE**)
 - [x] Docker Hub account created
+
 - [x] Repository `sanjinn/privacy_removal_phase1` created on Docker Hub
+
 - [x] Image built and tested locally
 - [x] Tag `deepprivacy2` pushed to Docker Hub
-- [x] Documentation updated
+
+- [x] Documentation updated 
 - [x] 394/394 test images successfully processed
 - [x] Face and full-body anonymization modes implemented
 - [x] CPU/GPU auto-detection optimization completed
 - [x] Batch processing with progress tracking implemented
-- [x] Production deployment ready
+- [x] Production deployment ready                 
 
 ### Available Images Status
 - `sanjinn/privacy_removal_phase1:face-anon-v3` - ✅ Available
