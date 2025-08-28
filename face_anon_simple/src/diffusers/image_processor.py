@@ -70,7 +70,7 @@ class VaeImageProcessor(ConfigMixin):
     @register_to_config
     def __init__(
         self,
-        do_resize: bool = False,  # 默认改为False，避免对图片进行压缩
+        do_resize: bool = True,
         vae_scale_factor: int = 8,
         resample: str = "lanczos",
         do_normalize: bool = True,

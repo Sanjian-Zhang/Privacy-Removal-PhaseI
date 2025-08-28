@@ -5,10 +5,6 @@ import cv2
 import pybboxes as pbx
 import yaml
 import argparse
-
-# Set environment variable to allow unsafe loading (for trusted models)
-os.environ['TORCH_LOAD_WEIGHTS_ONLY'] = 'False'
-
 from ultralytics import YOLO
 
 
@@ -17,7 +13,8 @@ parser.add_argument("--config", help = "path of the training configuartion file"
 args = parser.parse_args()
 
 if (os.path.exists("annot_txt")):
-    os.rmdir("annot_txt")
+    import shutil
+    shutil.rmtree("annot_txt")
 
 #Reading the configuration file
 with open(args.config, 'r') as f:
@@ -26,7 +23,21 @@ with open(args.config, 'r') as f:
     except yaml.YAMLError as exc:
         print(exc)
 
+print(f"Loading model from: {config['model_path']}")
 model = YOLO(config["model_path"])
+
+# Support multiple image formats
+supported_formats = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff']
+all_images = []
+for fmt in supported_formats:
+    all_images.extend(glob.glob(config['images_path'] + "/*" + fmt))
+    all_images.extend(glob.glob(config['images_path'] + "/*" + fmt.upper()))
+
+print(f"Found {len(all_images)} images in {config['images_path']}")
+
+if len(all_images) == 0:
+    print("No images found! Exiting...")
+    exit(1)
 
 if(config["gpu_avail"]):
     _ = model(source=config['images_path'],
@@ -47,7 +58,8 @@ else:
 
 
 #images = [int(item.split("/")[1].replace(config['img_format'], "")) for item in images]
-images = sorted(glob.glob(config['images_path']+"/*"+config["img_format"]))
+# Use the previously found image list
+images = sorted(all_images)
 
 os.mkdir("annot_txt")
 
@@ -64,8 +76,8 @@ try:
                     data_string = " ".join(str(num) for num in line)
                     with open(f"annot_txt/{os.path.basename(file)}", "a") as f:
                         f.write(data_string+"\n")
-except:
-    print(f'{os.path.basename(file)} has no detected objects.')
+except Exception as e:
+    print(f'Error processing annotations: {e}')
 
 
 def blur_regions(image, regions):
@@ -91,6 +103,8 @@ if not os.path.exists(output_folder):
 # List all text files in the 'dir' folder
 txt_files = [f for f in os.listdir(txt_folder) if f.endswith('.txt')]
 
+print(f"Processing {len(txt_files)} annotation files...")
+
 for txt_file in txt_files:
     # Read the text file containing bounding box information
     with open(os.path.join(txt_folder, txt_file), 'r') as f:
@@ -100,21 +114,44 @@ for txt_file in txt_files:
     bboxes = []
     for line in lines:
         values = line.strip().split()
-        x_min, y_min, x_max, y_max = map(int, values)  # Assuming VOC format with x_min, y_min, x_max, y_max
-        bboxes.append([x_min, y_min, x_max, y_max])
+        if len(values) >= 4:  # Ensure sufficient coordinate values
+            x_min, y_min, x_max, y_max = map(int, values[:4])  # Assuming VOC format with x_min, y_min, x_max, y_max
+            bboxes.append([x_min, y_min, x_max, y_max])
+
+    # Find corresponding image file - support multiple formats
+    base_name = os.path.splitext(txt_file)[0]
+    image_file = None
+    for fmt in ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.JPG', '.JPEG', '.PNG', '.BMP', '.TIFF']:
+        potential_image = base_name + fmt
+        image_path = os.path.join(image_folder, potential_image)
+        if os.path.exists(image_path):
+            image_file = potential_image
+            break
+    
+    if image_file is None:
+        print(f"No corresponding image found for {txt_file}")
+        continue
 
     # Read the corresponding image
-    image_file = txt_file.replace('.txt', config["img_format"])  # Assuming image files have .jpg extension
     image_path = os.path.join(image_folder, image_file)
     image = cv2.imread(image_path)
+    
+    if image is None:
+        print(f"Failed to load image: {image_path}")
+        continue
 
     # Apply Gaussian blur to each bounding box region
-    for bbox in bboxes:
+    if bboxes:
         image = blur_regions(image, bboxes)
 
     # Save the blurred image to the output folder
-    output_file = txt_file.replace('.txt', '_blurred.jpg')
+    output_file = base_name + '_blurred.jpg'
     output_path = os.path.join(output_folder, output_file)
-    cv2.imwrite(output_path, image)
+    
+    success = cv2.imwrite(output_path, image)
+    if success:
+        print(f"Processed: {image_file} -> {output_file}")
+    else:
+        print(f"Failed to save: {output_file}")
 
-print(f"@@ The bluured images are saved in Directory -------> {config['output_folder']}")
+print(f"@@ The blurred images are saved in Directory -------> {config['output_folder']}")
